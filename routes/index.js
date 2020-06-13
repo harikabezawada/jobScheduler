@@ -26,8 +26,14 @@ next(err)
 
     var job = new CronJob('* * * * *', function () {
       var currentTime=new Date().getTime()
-     let jobData=  Job.find({scheduleDate:currentTime})
-jobData.forEach(element => {
+       Job.find({scheduleDate:currentTime}).exec(function(err,jobData){
+		   
+	  
+	 console.log(jobData)
+	 if(jobData!=''){
+		 
+	 
+jobData.foreach(element => {
   var transporter = nodemailer.createTransport({
     service: 'gmail',//smtp.gmail.com  //in place of service use host...
     secure: false,//true
@@ -49,6 +55,8 @@ transporter.sendMail(mailOptions, function (err) {
 
 });
 
+ })
+	 }
 });
     }, null, true, 'America/Los_Angeles');
   
