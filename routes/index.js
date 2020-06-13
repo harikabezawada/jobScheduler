@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var jobService=require("../controller/jobService")
+var CronJob = require('cron').CronJob;
 var nodemailer = require('nodemailer');
 const db = require('../helper/db');
 const Job=db.Job
@@ -25,7 +26,7 @@ next(err)
 
     var job = new CronJob('* * * * *', function () {
       var currentTime=new Date().getTime()
-     let jobData= await Job.find({scheduleDate:currentTime})
+     let jobData=  Job.find({scheduleDate:currentTime})
 jobData.forEach(element => {
   var transporter = nodemailer.createTransport({
     service: 'gmail',//smtp.gmail.com  //in place of service use host...
